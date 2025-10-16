@@ -1,0 +1,5 @@
+{
+  "name": "AI Design Inspiration Hub",
+  "description": "A web application to upload UI screenshots and use AI to analyze them, extracting detailed design specifications for inspiration. Manage, tag, and search your design library to empower your creative workflow and provide context for AI-driven design tasks.",
+  "requestFramePermissions": []
+}
