@@ -6,9 +6,11 @@ import ImageCard from './ImageCard';
 interface ImageGridProps {
     screenshots: Screenshot[];
     onSelectScreenshot: (screenshot: Screenshot) => void;
+    contextSelection: string[];
+    onToggleContextSelection: (screenshotId: string) => void;
 }
 
-const ImageGrid: React.FC<ImageGridProps> = ({ screenshots, onSelectScreenshot }) => {
+const ImageGrid: React.FC<ImageGridProps> = ({ screenshots, onSelectScreenshot, contextSelection, onToggleContextSelection }) => {
     if (screenshots.length === 0) {
         return null; // The parent component handles the empty state message
     }
@@ -20,6 +22,8 @@ const ImageGrid: React.FC<ImageGridProps> = ({ screenshots, onSelectScreenshot }
                     key={screenshot.id}
                     screenshot={screenshot}
                     onClick={() => onSelectScreenshot(screenshot)}
+                    isSelected={contextSelection.includes(screenshot.id)}
+                    onToggleSelection={() => onToggleContextSelection(screenshot.id)}
                 />
             ))}
         </div>

@@ -139,7 +139,6 @@ export const analyzeImageForDesign = async (base64ImageData: string, mimeType: s
         const jsonString = response.text.trim();
         const parsedJson = JSON.parse(jsonString);
         
-        // Basic validation to ensure it looks like our spec
         if (!parsedJson.colorPalette || !parsedJson.uiComponents) {
             throw new Error("AI response did not match the expected format.");
         }
@@ -149,5 +148,33 @@ export const analyzeImageForDesign = async (base64ImageData: string, mimeType: s
     } catch (error) {
         console.error("Error calling Gemini API:", error);
         throw new Error("Failed to get design specifications from AI.");
+    }
+};
+
+export const generateWithContext = async (prompt: string, images: { base64ImageData: string, mimeType: string }[]): Promise<string> => {
+    try {
+        const imageParts = images.map(image => ({
+            inlineData: {
+                data: image.base64ImageData,
+                mimeType: image.mimeType,
+            },
+        }));
+
+        const textPart = {
+            text: prompt,
+        };
+
+        const parts = [textPart, ...imageParts];
+
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: { parts: parts },
+        });
+
+        return response.text;
+
+    } catch (error) {
+        console.error("Error calling Gemini API with context:", error);
+        throw new Error("Failed to generate response from AI with context.");
     }
 };
